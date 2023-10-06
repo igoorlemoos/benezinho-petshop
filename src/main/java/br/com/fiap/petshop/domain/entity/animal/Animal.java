@@ -11,33 +11,45 @@ import java.util.Collections;
 import java.util.Set;
 
 
-
+@Entity
+@Table(name = "TB_ANIMAL")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Animal {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_ANIMAL")
+    @SequenceGenerator(name = "SQ_ANIMAL", sequenceName = "SQ_ANIMAL", allocationSize = 1)
+    @Column(name = "ID_ANIMAL")
     private Long id;
 
-
+    @Column(name = "NM_ANIMAL")
     private String nome;
 
+    @Column(name = "SEXO_ANIMAL")
     private Sexo sexo;
 
+    @Column(name = "DT_NASC_ANIMAL")
     private LocalDate nascimento;
 
+    @Column(name = "RACA_ANIMAL")
     private String raca;
 
-
+    @Column(name = "DESC_ANIMAL")
     private String descricao;
 
+    @Column(name = "OBS_ANIMAL")
     private String observacao;
 
-
+    @Column(name = "TP_ANIMAL")
     private String tipo;
 
-
-
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(
+            name = "DONO",
+            referencedColumnName = "ID_PESSOA",
+            foreignKey = @ForeignKey(name = "FK_ANIMAL_DONO")
+    )
     private Pessoa dono;
-
 
 
     public Animal() {
